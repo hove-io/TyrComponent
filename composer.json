@@ -1,0 +1,15 @@
+{
+    "name": "canaltp/TyrComponent",
+    "license": "GPL-3.0",
+    "type": "library",
+    "description": "PHP library which makes curl calls to Tyr API.",
+    "homepage": "CanalTP/TyrComponent",
+    "keywords": ["php", "tyr"],
+    "require": {
+        "php": ">=5.2",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": { "CanalTP\\TyrComponent\\": "src/" }
+    }
+}
