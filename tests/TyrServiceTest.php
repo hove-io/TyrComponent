@@ -16,9 +16,4 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
     {
         $this->tyrService = new TyrService('tyr-ws.ctp.alpha.canaltp.fr/v0/', 2, 'without_free_instances', 'sncf');
     }
-    
-    public function test()
-    {
-        var_dump($this->tyrService->getUserByEmail('vincent.lara@canaltp.fr'));
-    }
 }
