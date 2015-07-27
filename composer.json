@@ -1,5 +1,5 @@
 {
-    "name": "canaltp/TyrComponent",
+    "name": "canaltp/tyr-component",
     "license": "GPL-3.0",
     "type": "library",
     "description": "PHP library which makes curl calls to Tyr API.",

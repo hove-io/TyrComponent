@@ -90,7 +90,8 @@ class TyrService
     /**
      * @param int $userId
      *
-     * @return array|\stdClass array of keys or \stdClass on user id not found
+     * @return array|\stdClass array of keys
+     *                         or \stdClass with attribute 'status' if $userId not found
      */
     public function getUserKeys($userId)
     {
