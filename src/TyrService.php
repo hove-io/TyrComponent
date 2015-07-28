@@ -50,7 +50,7 @@ class TyrService
     private function createDefaultClient()
     {
         return new Client(array(
-            'base_uri' => $this->wsUrl,
+            'base_url' => $this->wsUrl,
             'stream' => false,
             'http_errors' => false,
         ));
