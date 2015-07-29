@@ -3,6 +3,8 @@
 namespace CanalTP\TyrComponent;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Message\Response;
+use GuzzleHttp\Event\CompleteEvent;
 
 class TyrService
 {
@@ -17,29 +19,35 @@ class TyrService
     private $endPointId;
 
     /**
-     * @var string|null
-     */
-    private $appName;
-
-    /**
      * @var Client
      */
     private $client;
+
+    /**
+     * @var Response
+     */
+    private $lastResponse;
 
     /**
      * Constructor.
      *
      * @param string $wsUrl
      * @param string $endPointId
-     * @param string|null $appName
      */
-    public function __construct($wsUrl, $endPointId, $appName = null)
+    public function __construct($wsUrl, $endPointId)
     {
         $this->wsUrl = $wsUrl;
         $this->endPointId = $endPointId;
-        $this->appName = $appName;
 
         $this->setClient($this->createDefaultClient());
+    }
+
+    /**
+     * @return Response
+     */
+    public function getLastResponse()
+    {
+        return $this->lastResponse;
     }
 
     /**
@@ -49,11 +57,15 @@ class TyrService
      */
     private function createDefaultClient()
     {
-        return new Client(array(
+        $client = new Client(array(
             'base_url' => $this->wsUrl,
             'stream' => false,
             'http_errors' => false,
         ));
+
+        $client->setDefaultOption('exceptions', false);
+
+        return $client;
     }
 
     /**
@@ -67,30 +79,42 @@ class TyrService
     {
         $this->client = $client;
 
+        $this->client->getEmitter()->removeListener('complete', array($this, 'onResponse'));
+        $this->client->getEmitter()->on('complete', array($this, 'onResponse'));
+
         return $this;
+    }
+
+    /**
+     * Callback called after a response has been received
+     *
+     * @param CompleteEvent $event
+     */
+    public function onResponse(CompleteEvent $event)
+    {
+        $this->lastResponse = $event->getResponse();
     }
 
     /**
      * @param string $email
      * @param string $login
-     * @param string $type
+     * @param array $parameters extra parameters
      *
      * @return \stdClass
      */
-    public function createUser($email, $login, $type)
+    public function createUser($email, $login, array $parameters = array())
     {
-        $parameters = array(
+        $params = array_merge($parameters, array(
             'email' => $email,
             'login' => $login,
-            'type' => $type,
-        );
+        ));
 
         if (null !== $this->endPointId) {
-            $parameters['end_point_id'] = $this->endPointId;
+            $params['end_point_id'] = $this->endPointId;
         }
 
         $response = $this->client->post('users', array(
-            'json' => $parameters,
+            'json' => $params,
         ));
 
         return json_decode($response->getBody());
@@ -139,7 +163,9 @@ class TyrService
         $user = $this->getUserByEmail($email);
 
         if (null !== $user) {
-            return null === $this->client->delete('users/'.$user->id);
+            $response = $this->client->delete('users/'.$user->id);
+
+            return null === json_decode($response->getBody());
         } else {
             return false;
         }
@@ -147,21 +173,25 @@ class TyrService
 
     /**
      * @param int $userId
+     * @param string $appName
      *
      * @return string|null created key or null on failure
      */
-    public function createUserKey($userId)
+    public function createUserKey($userId, $appName = 'default')
     {
         $url = sprintf('users/%s/keys', $userId);
 
         $response = $this->client->post($url, array(
             'json' => array(
-                'app_name' => $this->appName,
+                'app_name' => $appName,
             ),
         ));
 
-        if(is_object($response) && property_exists($response, 'keys') && is_array($response->keys)) {
-            $lastKey = end($response->keys);
+        $result = json_decode($response->getBody());
+        $key = null;
+
+        if(is_object($result) && property_exists($result, 'keys') && is_array($result->keys)) {
+            $lastKey = end($result->keys);
             if(is_object($lastKey) && property_exists($lastKey, 'token')) {
                 $key = $lastKey->token;
             }
