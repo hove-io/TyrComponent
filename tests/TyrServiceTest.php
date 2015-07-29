@@ -16,7 +16,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function __construct()
     {
-        $this->tyrService = new TyrService('http://tyr.dev.canaltp.fr/v0/', 2, 'sncf');
+        $this->tyrService = new TyrService('http://tyr.dev.canaltp.fr/v0/', 2);
     }
 
     public function testCreateUserReturnsValidStatusCode()
