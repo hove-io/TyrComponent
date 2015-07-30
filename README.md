@@ -11,7 +11,7 @@ Install via composer
 ``` js
 {
     "require": {
-        "canaltp/tyr-component": "1.x"
+        "canaltp/tyr-component": "1.1.x"
     }
 }
 ```
