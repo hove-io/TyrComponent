@@ -190,9 +190,9 @@ class TyrService
         $result = json_decode($response->getBody());
         $key = null;
 
-        if(is_object($result) && property_exists($result, 'keys') && is_array($result->keys)) {
+        if (is_object($result) && property_exists($result, 'keys') && is_array($result->keys)) {
             $lastKey = end($result->keys);
-            if(is_object($lastKey) && property_exists($lastKey, 'token')) {
+            if (is_object($lastKey) && property_exists($lastKey, 'token')) {
                 $key = $lastKey->token;
             }
         }

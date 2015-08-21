@@ -1,5 +1,6 @@
-phpunit.xml
-vendor/
+/phpunit.xml
+/vendor/
+/.idea
 
 # Others
 *~
