@@ -16,7 +16,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function __construct()
     {
-        $this->tyrService = new TyrService('http://tyr.dev.canaltp.fr/v0/', 2, 'sncf');
+        $this->tyrService = new TyrService('http://tyr.dev.canaltp.fr/v0/', 2);
     }
 
     public function testCreateUserReturnsValidStatusCode()
@@ -82,12 +82,23 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
         $this->tyrService->deleteUser($user->email);
     }
 
-    public function testGetUserKeys()
+    public function testGetUserKeysReturnsEmptyArrayIfNotKeys()
     {
         $user = $this->createRandomUser();
         $createdUser = $this->tyrService->createUser($user->email, $user->login);
 
-        $this->assertCount(0, $this->tyrService->getUserKeys($createdUser->id));
+        $keys = $this->tyrService->getUserKeys($createdUser->id);
+
+        $this->assertCount(0, $keys);
+        $this->assertEquals(array(), $keys);
+
+        $this->tyrService->deleteUser($user->email);
+    }
+
+    public function testGetUserKeys()
+    {
+        $user = $this->createRandomUser();
+        $createdUser = $this->tyrService->createUser($user->email, $user->login);
 
         $this->tyrService->createUserKey($createdUser->id);
 
@@ -105,8 +116,6 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
     {
         $user = $this->createRandomUser();
         $createdUser = $this->tyrService->createUser($user->email, $user->login);
-
-        $this->assertCount(0, $this->tyrService->getUserKeys($createdUser->id));
 
         $this->tyrService->createUserKey($createdUser->id);
         $this->tyrService->createUserKey($createdUser->id);

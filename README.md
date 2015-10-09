@@ -11,7 +11,7 @@ Install via composer
 ``` js
 {
     "require": {
-        "canaltp/tyr-component": "1.x"
+        "canaltp/tyr-component": "1.1.x"
     }
 }
 ```
@@ -29,7 +29,7 @@ $endPointId = 2;
 $tyrApi = new CanalTP\TyrComponent\TyrService($tyrUrl, $endPointId);
 
 // Creating request
-$user = $tyrApi->createUser('email', 'login', 'user type');
+$user = $tyrApi->createUser('email', 'login');
 
 // Get last Guzzle response instance (usefull to get status code...)
 $response = $tyrApi->getLastResponse();
