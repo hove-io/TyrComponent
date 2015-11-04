@@ -177,4 +177,78 @@ class TyrService extends AbstractTyrService
 
         return json_decode($response->getBody());
     }
+
+    /**
+     * Creates a new plan.
+     *
+     * @param string $title
+     * @param int $limitCalls
+     *
+     * @return \stdClass Created plan
+     */
+    public function createPlan($title, $limitCalls)
+    {
+        return [
+            'id' => 3,
+            'title' => $title,
+            'limitCalls' => $limitCalls,
+        ];
+    }
+
+    /**
+     * Get all available plans.
+     *
+     * @return \stdClass[]
+     */
+    public function getPlans()
+    {
+        return [
+            1 => [
+                'id' => 1,
+                'title' => 'Développeur',
+                'limitCalls' => 3000,
+            ],
+            2 => [
+                'id' => 2,
+                'title' => 'Professional',
+                'limitCalls' => 15000,
+            ],
+        ];
+    }
+
+    /**
+     * Get all available plans.
+     *
+     * @return \stdClass[]
+     */
+    public function getPlan($id)
+    {
+        return $this->getPlans()[$id];
+    }
+
+    /**
+     * Update a plans.
+     *
+     * @param int $id
+     * @param string $title
+     * @param int $limitCalls
+     *
+     * @return bool success
+     */
+    public function updatePlan($id, $title, $limitCalls)
+    {
+        return true;
+    }
+
+    /**
+     * Delete a plan.
+     *
+     * @param int $id
+     *
+     * @return bool success
+     */
+    public function deletePlan($id)
+    {
+        return true;
+    }
 }
