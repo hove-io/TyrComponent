@@ -20,7 +20,7 @@ class VersionChecker
 
         if (5 === $guzzleVersion) {
             return 'CanalTP\\TyrComponent\\TyrService';
-        } else if (3 === $guzzleVersion) {
+        } elseif (3 === $guzzleVersion) {
             return 'CanalTP\\TyrComponent\\Guzzle3\\TyrService';
         }
     }
