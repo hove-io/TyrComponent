@@ -44,14 +44,14 @@ abstract class AbstractTyrService
      * @throws Exception\NotSupportedException when Guzzle vendor version is not supported.
      * @throws Exception\VersionCheckerException when Guzzle vendor version is supported but not by this class.
      */
-    protected abstract function checkGuzzleVersion();
+    abstract protected function checkGuzzleVersion();
 
     /**
      * Create a default Guzzle client.
      *
      * @return mixed
      */
-    protected abstract function createDefaultClient();
+    abstract protected function createDefaultClient();
 
     /**
      * @return mixed
@@ -82,7 +82,7 @@ abstract class AbstractTyrService
      *
      * @param mixed $client Guzzle client to listen.
      */
-    protected abstract function listenResponses($client);
+    abstract protected function listenResponses($client);
 
     /**
      * @param string $email
@@ -91,28 +91,28 @@ abstract class AbstractTyrService
      *
      * @return \stdClass
      */
-    public abstract function createUser($email, $login, array $parameters = array());
+    abstract public function createUser($email, $login, array $parameters = array());
 
     /**
      * @param string $email
      *
      * @return bool
      */
-    public abstract function hasUserByEmail($email);
+    abstract public function hasUserByEmail($email);
 
     /**
      * @param string $email
      *
      * @return \stdClass|null
      */
-    public abstract function getUserByEmail($email);
+    abstract public function getUserByEmail($email);
 
     /**
      * @param string $email
      *
      * @return bool success
      */
-    public abstract function deleteUser($email);
+    abstract public function deleteUser($email);
 
     /**
      * @param int $userId
@@ -120,7 +120,7 @@ abstract class AbstractTyrService
      *
      * @return string|null created key or null on failure
      */
-    public abstract function createUserKey($userId, $appName = 'default');
+    abstract public function createUserKey($userId, $appName = 'default');
 
     /**
      * @param int $userId
@@ -128,7 +128,7 @@ abstract class AbstractTyrService
      * @return array|\stdClass array of keys
      *                         or \stdClass with attribute 'status' if $userId not found
      */
-    public abstract function getUserKeys($userId);
+    abstract public function getUserKeys($userId);
 
     /**
      * @param int $userId
@@ -136,5 +136,5 @@ abstract class AbstractTyrService
      *
      * @return array|\stdClass
      */
-    public abstract function deleteUserKey($userId, $keyId);
+    abstract public function deleteUserKey($userId, $keyId);
 }
