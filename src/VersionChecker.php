@@ -8,6 +8,24 @@ use CanalTP\TyrComponent\Exception\NotSupportedException;
 class VersionChecker
 {
     /**
+     * Get TyrService class to use depending on currently installed Guzzle version.
+     *
+     * @throws NotSupportedException when Guzzle vendor version is not supported.
+     *
+     * @return string
+     */
+    public static function getTyrServiceClassName()
+    {
+        $guzzleVersion = VersionChecker::vendorGuzzleVersion();
+
+        if (5 === $guzzleVersion) {
+            return 'CanalTP\\TyrComponent\\TyrService';
+        } else if (3 === $guzzleVersion) {
+            return 'CanalTP\\TyrComponent\\Guzzle3\\TyrService';
+        }
+    }
+
+    /**
      * @return int current Guzzle vendor version.
      *
      * @throws NotSupportedException when Guzzle vendor version is not supported.
