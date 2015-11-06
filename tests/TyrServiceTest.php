@@ -2,7 +2,7 @@
 
 namespace CanalTP\TyrComponent\Tests;
 
-use CanalTP\TyrComponent\TyrService;
+use CanalTP\TyrComponent\VersionChecker;
 
 class TyrServiceTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,7 +16,9 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
      */
     public function __construct()
     {
-        $this->tyrService = new TyrService('http://tyr.dev.canaltp.fr/v0/', 2);
+        $tyrServiceClass = VersionChecker::getTyrServiceClassName();
+
+        $this->tyrService = new $tyrServiceClass('http://tyr.dev.canaltp.fr/v0/', 2);
     }
 
     public function testCreateUserReturnsValidStatusCode()
