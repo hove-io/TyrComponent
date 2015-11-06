@@ -1,9 +1,9 @@
 <?php
 
-namespace CanalTP\TyrComponent;
+namespace CanalTP\TyrComponent\Guzzle3;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Event\CompleteEvent;
+use Guzzle\Common\Event;
+use Guzzle\Service\Client;
 use CanalTP\TyrComponent\VersionChecker;
 use CanalTP\TyrComponent\AbstractTyrService;
 
@@ -14,7 +14,7 @@ class TyrService extends AbstractTyrService
      */
     protected function checkGuzzleVersion()
     {
-        VersionChecker::supportsGuzzleVersion(5, get_class($this));
+        VersionChecker::supportsGuzzleVersion(3, get_class($this));
     }
 
     /**
@@ -22,13 +22,7 @@ class TyrService extends AbstractTyrService
      */
     protected function createDefaultClient()
     {
-        $client = new Client(array(
-            'base_url' => $this->wsUrl,
-            'stream' => false,
-            'http_errors' => false,
-        ));
-
-        $client->setDefaultOption('exceptions', false);
+        $client = new Client($this->wsUrl);
 
         return $client;
     }
@@ -38,18 +32,11 @@ class TyrService extends AbstractTyrService
      */
     protected function listenResponses($client)
     {
-        $client->getEmitter()->removeListener('complete', array($this, 'onResponse'));
-        $client->getEmitter()->on('complete', array($this, 'onResponse'));
-    }
+        $client->getEventDispatcher()->addListener('request.sent', function (Event $event) {
+            $this->lastResponse = $event['response'];
+        });
 
-    /**
-     * Callback called after a response has been received
-     *
-     * @param CompleteEvent $event
-     */
-    public function onResponse(CompleteEvent $event)
-    {
-        $this->lastResponse = $event->getResponse();
+        return $this;
     }
 
     /**
@@ -66,9 +53,7 @@ class TyrService extends AbstractTyrService
             $params['end_point_id'] = $this->endPointId;
         }
 
-        $response = $this->client->post('users', array(
-            'json' => $params,
-        ));
+        $response = $this->client->post('users', [], $params)->send();
 
         return json_decode($response->getBody());
     }
@@ -86,12 +71,12 @@ class TyrService extends AbstractTyrService
      */
     public function getUserByEmail($email)
     {
-        $response = $this->client->get('users', array(
+        $response = $this->client->get('users', [], array(
             'query' => array(
                 'email' => $email,
                 'end_point_id' => $this->endPointId,
             ),
-        ));
+        ))->send();
 
         $users = json_decode($response->getBody());
 
@@ -110,7 +95,7 @@ class TyrService extends AbstractTyrService
         $user = $this->getUserByEmail($email);
 
         if (null !== $user) {
-            $response = $this->client->delete('users/'.$user->id);
+            $response = $this->client->delete('users/'.$user->id)->send();
 
             return null === json_decode($response->getBody());
         } else {
@@ -125,11 +110,9 @@ class TyrService extends AbstractTyrService
     {
         $url = sprintf('users/%s/keys', $userId);
 
-        $response = $this->client->post($url, array(
-            'json' => array(
-                'app_name' => $appName,
-            ),
-        ));
+        $response = $this->client->post($url, [], array(
+            'app_name' => $appName,
+        ))->send();
 
         $result = json_decode($response->getBody());
         $key = null;
@@ -149,7 +132,7 @@ class TyrService extends AbstractTyrService
      */
     public function getUserKeys($userId)
     {
-        $response = $this->client->get('users/'.$userId.'/keys');
+        $response = $this->client->get('users/'.$userId.'/keys')->send();
 
         return json_decode($response->getBody());
     }
@@ -159,7 +142,7 @@ class TyrService extends AbstractTyrService
      */
     public function deleteUserKey($userId, $keyId)
     {
-        $response = $this->client->delete(sprintf('users/%s/keys/%s', $userId, $keyId));
+        $response = $this->client->delete(sprintf('users/%s/keys/%s', $userId, $keyId))->send();
 
         return json_decode($response->getBody());
     }
