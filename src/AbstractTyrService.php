@@ -42,7 +42,7 @@ abstract class AbstractTyrService
 
     /**
      * @throws Exception\NotSupportedException when Guzzle vendor version is not supported.
-     * @throws Exception\VersionCheckerException when version is supported is not $version.
+     * @throws Exception\VersionCheckerException when Guzzle vendor version is supported but not by this class.
      */
     protected abstract function checkGuzzleVersion();
 

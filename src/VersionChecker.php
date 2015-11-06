@@ -30,7 +30,7 @@ class VersionChecker
      * @param string $className The class which want to use the $version of Guzzle.
      *
      * @throws NotSupportedException when Guzzle vendor version is not supported.
-     * @throws VersionCheckerException when version is supported is not $version.
+     * @throws VersionCheckerException when Guzzle vendor version is supported but not by $className.
      */
     public static function supportsGuzzleVersion($version, $className)
     {
