@@ -178,7 +178,7 @@ class TyrService extends AbstractTyrService
             ],
             2 => (object) [
                 'id' => 2,
-                'title' => 'pro',
+                'name' => 'pro',
                 'max_request_count' => 15000,
                 'max_object_count' => 10000,
                 'default' => false,
