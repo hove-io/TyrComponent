@@ -183,7 +183,7 @@ class TyrService extends AbstractTyrService
      */
     public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
     {
-        return [
+        return (object) [
             'id' => 3,
             'name' => $name,
             'max_request_count' => $maxRequestCount,
@@ -199,7 +199,7 @@ class TyrService extends AbstractTyrService
     public function getBillingPlans()
     {
         return [
-            1 => [
+            1 => (object) [
                 'id' => 1,
                 'name' => 'Développeur',
                 'max_request_count' => 3000,
@@ -207,7 +207,7 @@ class TyrService extends AbstractTyrService
                 'default' => true,
                 'end_point_id' => $this->endPointId,
             ],
-            2 => [
+            2 => (object) [
                 'id' => 2,
                 'title' => 'Professional',
                 'max_request_count' => 15000,
@@ -223,7 +223,7 @@ class TyrService extends AbstractTyrService
      */
     public function getBillingPlan($id)
     {
-        return $this->getPlans()[$id];
+        return $this->getBillingPlans()[$id];
     }
 
     /**
