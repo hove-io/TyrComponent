@@ -157,6 +157,16 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
+    public function getUserById($id)
+    {
+        $response = $this->client->get('users/'.$id);
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function deleteUserKey($userId, $keyId)
     {
         $response = $this->client->delete(sprintf('users/%s/keys/%s', $userId, $keyId));
