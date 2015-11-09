@@ -90,6 +90,16 @@ abstract class AbstractTyrService
     }
 
     /**
+     * @throws \LogicException if endPointId not set
+     */
+    protected function checkEndPointId()
+    {
+        if (null === $this->endPointId) {
+            throw new \LogicException('endPointId must be defined.');
+        }
+    }
+
+    /**
      * Listen received responses from Guzzle client and set lastResponse.
      *
      * @param mixed $client Guzzle client to listen.
