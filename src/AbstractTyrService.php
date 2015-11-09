@@ -166,4 +166,52 @@ abstract class AbstractTyrService
      * @return array|\stdClass
      */
     abstract public function deleteUserKey($userId, $keyId);
+
+    /**
+     * Create a new billing plan.
+     *
+     * @param string $name
+     * @param int|null $maxRequestCount
+     * @param int|null $maxObjectCount
+     * @param bool $default
+     *
+     * @return \stdClass Created billing plan.
+     */
+    abstract public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default);
+
+    /**
+     * Get all available plans.
+     *
+     * @return \stdClass[]
+     */
+    abstract public function getBillingPlans();
+
+    /**
+     * Get billing plan by id.
+     *
+     * @return \stdClass
+     */
+    abstract public function getBillingPlan($id);
+
+    /**
+     * Update a plan.
+     *
+     * @param int $id
+     * @param string $name
+     * @param int|null $maxRequestCount
+     * @param int|null $maxObjectCount
+     * @param bool $default
+     *
+     * @return bool success
+     */
+    abstract public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default);
+
+    /**
+     * Delete a plan.
+     *
+     * @param int $id
+     *
+     * @return bool success
+     */
+    abstract public function deleteBillingPlan($id);
 }
