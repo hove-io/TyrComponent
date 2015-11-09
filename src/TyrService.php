@@ -165,75 +165,65 @@ class TyrService extends AbstractTyrService
     }
 
     /**
-     * Creates a new plan.
-     *
-     * @param string $title
-     * @param int $limitCalls
-     *
-     * @return \stdClass Created plan
+     * {@InheritDoc}
      */
-    public function createPlan($title, $limitCalls)
+    public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
     {
         return [
             'id' => 3,
-            'title' => $title,
-            'limitCalls' => $limitCalls,
+            'name' => $name,
+            'max_request_count' => $maxRequestCount,
+            'max_object_count' => $maxObjectCount,
+            'default' => $default,
+            'end_point_id' => $this->endPointId,
         ];
     }
 
     /**
-     * Get all available plans.
-     *
-     * @return \stdClass[]
+     * {@InheritDoc}
      */
-    public function getPlans()
+    public function getBillingPlans()
     {
         return [
             1 => [
                 'id' => 1,
-                'title' => 'Développeur',
-                'limitCalls' => 3000,
+                'name' => 'Développeur',
+                'max_request_count' => 3000,
+                'max_object_count' => 15000,
+                'default' => true,
+                'end_point_id' => $this->endPointId,
             ],
             2 => [
                 'id' => 2,
                 'title' => 'Professional',
-                'limitCalls' => 15000,
+                'max_request_count' => 15000,
+                'max_object_count' => 10000,
+                'default' => false,
+                'end_point_id' => $this->endPointId,
             ],
         ];
     }
 
     /**
-     * Get all available plans.
-     *
-     * @return \stdClass[]
+     * {@InheritDoc}
      */
-    public function getPlan($id)
+    public function getBillingPlan($id)
     {
         return $this->getPlans()[$id];
     }
 
     /**
-     * Update a plans.
-     *
-     * @param int $id
-     * @param string $title
-     * @param int $limitCalls
-     *
-     * @return bool success
+     * {@InheritDoc}
      */
-    public function updatePlan($id, $title, $limitCalls)
+    public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
     {
         return true;
     }
 
     /**
-     * Delete a plan.
-     *
-     * @param int $id
-     *
-     * @return bool success
+     * {@InheritDoc}
      */
-    public function deletePlan($id)
+    public function deleteBillingPlan($id)
     {
         return true;
     }
