@@ -192,7 +192,7 @@ class TyrService extends AbstractTyrService
         return [
             1 => (object) [
                 'id' => 1,
-                'name' => 'Développeur',
+                'name' => 'dev',
                 'max_request_count' => 3000,
                 'max_object_count' => 15000,
                 'default' => true,
@@ -200,7 +200,7 @@ class TyrService extends AbstractTyrService
             ],
             2 => (object) [
                 'id' => 2,
-                'title' => 'Professional',
+                'title' => 'pro',
                 'max_request_count' => 15000,
                 'max_object_count' => 10000,
                 'default' => false,
