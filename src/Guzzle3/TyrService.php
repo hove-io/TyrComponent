@@ -22,7 +22,15 @@ class TyrService extends AbstractTyrService
      */
     protected function createDefaultClient()
     {
-        $client = new Client($this->wsUrl);
+        $client = new Client(
+            $this->wsUrl,
+            [
+                'request.options' => [
+                    'exceptions' => false,
+                    'stream' => false
+                ]
+            ]
+        );
 
         return $client;
     }
