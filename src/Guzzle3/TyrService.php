@@ -168,4 +168,68 @@ class TyrService extends AbstractTyrService
 
         return json_decode($response->getBody());
     }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        $params = [
+            'name' => $name,
+            'max_request_count' => $maxRequestCount,
+            'max_object_count' => $maxObjectCount,
+            'default' => $default ? 1 : ''
+        ];
+
+        $response = $this->client->post('billing_plans', [], $params)->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlans()
+    {
+        $response = $this->client->get('billing_plans')->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlan($id)
+    {
+        $response = $this->client->get('billing_plans/'.$id)->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        $params = [
+            'name' => $name,
+            'max_request_count' => $maxRequestCount,
+            'max_object_count' => $maxObjectCount,
+            'default' => $default ? 1 : ''
+        ];
+
+        $response = $this->client->put('billing_plans/'.$id, [], $params)->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function deleteBillingPlan($id)
+    {
+        $response = $this->client->delete(sprintf('billing_plans/%s', $id))->send();
+
+        return json_decode($response->getBody());
+    }
 }

@@ -177,4 +177,66 @@ class TyrService extends AbstractTyrService
 
         return json_decode($response->getBody());
     }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        $response = $this->client->post(sprintf(
+            'billing_plans?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            $name,
+            $maxRequestCount,
+            $maxObjectCount,
+            $default ? 1 : ''
+        ));
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlans()
+    {
+        $response = $this->client->get(sprintf('billing_plans'));
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlan($id)
+    {
+        $response = $this->client->get(sprintf('billing_plans/%s', $id));
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        $response = $this->client->put(sprintf(
+            'billing_plans?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            $name,
+            $maxRequestCount,
+            $maxObjectCount,
+            $default ? 1 : ''
+        ));
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function deleteBillingPlan($id)
+    {
+        $response = $this->client->delete(sprintf('billing_plans/%s', $id));
+
+        return json_decode($response->getBody());
+    }
 }
