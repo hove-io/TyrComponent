@@ -130,6 +130,13 @@ abstract class AbstractTyrService
     abstract public function getUserByEmail($email);
 
     /**
+     * @param int $id
+     *
+     * @return \stdClass|null
+     */
+    abstract public function getUserById($id);
+
+    /**
      * @param string $email
      *
      * @return bool success

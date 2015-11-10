@@ -22,7 +22,15 @@ class TyrService extends AbstractTyrService
      */
     protected function createDefaultClient()
     {
-        $client = new Client($this->wsUrl);
+        $client = new Client(
+            $this->wsUrl,
+            [
+                'request.options' => [
+                    'exceptions' => false,
+                    'stream' => false
+                ]
+            ]
+        );
 
         return $client;
     }
@@ -137,6 +145,16 @@ class TyrService extends AbstractTyrService
     public function getUserKeys($userId)
     {
         $response = $this->client->get('users/'.$userId.'/keys')->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getUserById($id)
+    {
+        $response = $this->client->get('users/'.$id)->send();
 
         return json_decode($response->getBody());
     }
