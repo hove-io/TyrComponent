@@ -44,6 +44,8 @@ class TyrService extends AbstractTyrService
      */
     public function createUser($email, $login, array $parameters = array())
     {
+        $this->checkEndPointId();
+
         $params = array_merge($parameters, array(
             'email' => $email,
             'login' => $login,
@@ -71,6 +73,8 @@ class TyrService extends AbstractTyrService
      */
     public function getUserByEmail($email)
     {
+        $this->checkEndPointId();
+
         $response = $this->client->get('users', [], array(
             'query' => array(
                 'email' => $email,

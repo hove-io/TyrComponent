@@ -28,9 +28,9 @@ abstract class AbstractTyrService
      * Constructor.
      *
      * @param string $wsUrl
-     * @param string $endPointId
+     * @param int $endPointId
      */
-    public function __construct($wsUrl, $endPointId)
+    public function __construct($wsUrl, $endPointId = null)
     {
         $this->checkGuzzleVersion();
 
@@ -62,6 +62,18 @@ abstract class AbstractTyrService
     }
 
     /**
+     * @param int $endPointId
+     *
+     * @return AbstractTyrService
+     */
+    public function setEndPointId($endPointId)
+    {
+        $this->endPointId = $endPointId;
+
+        return $this;
+    }
+
+    /**
      * Set Guzzle client.
      *
      * @param mixed $client
@@ -75,6 +87,16 @@ abstract class AbstractTyrService
         $this->listenResponses($client);
 
         return $this;
+    }
+
+    /**
+     * @throws \LogicException if endPointId not set
+     */
+    protected function checkEndPointId()
+    {
+        if (null === $this->endPointId) {
+            throw new \LogicException('endPointId must be defined.');
+        }
     }
 
     /**
