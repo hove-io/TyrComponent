@@ -177,4 +177,68 @@ class TyrService extends AbstractTyrService
 
         return json_decode($response->getBody());
     }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        return (object) [
+            'id' => 3,
+            'name' => $name,
+            'max_request_count' => $maxRequestCount,
+            'max_object_count' => $maxObjectCount,
+            'default' => $default,
+            'end_point_id' => $this->endPointId,
+        ];
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlans()
+    {
+        return [
+            1 => (object) [
+                'id' => 1,
+                'name' => 'dev',
+                'max_request_count' => 3000,
+                'max_object_count' => 15000,
+                'default' => true,
+                'end_point_id' => $this->endPointId,
+            ],
+            2 => (object) [
+                'id' => 2,
+                'title' => 'pro',
+                'max_request_count' => 15000,
+                'max_object_count' => 10000,
+                'default' => false,
+                'end_point_id' => $this->endPointId,
+            ],
+        ];
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getBillingPlan($id)
+    {
+        return $this->getBillingPlans()[$id];
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
+    {
+        return true;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function deleteBillingPlan($id)
+    {
+        return true;
+    }
 }
