@@ -174,14 +174,16 @@ class TyrService extends AbstractTyrService
      */
     public function createBillingPlan($name, $maxRequestCount, $maxObjectCount, $default)
     {
-        return (object) [
-            'id' => 3,
+        $params = [
             'name' => $name,
             'max_request_count' => $maxRequestCount,
             'max_object_count' => $maxObjectCount,
-            'default' => $default,
-            'end_point_id' => $this->endPointId,
+            'default' => $default ? 1 : ''
         ];
+
+        $response = $this->client->post('billing_plans', [], $params)->send();
+
+        return json_decode($response->getBody());
     }
 
     /**
@@ -189,24 +191,9 @@ class TyrService extends AbstractTyrService
      */
     public function getBillingPlans()
     {
-        return [
-            1 => (object) [
-                'id' => 1,
-                'name' => 'dev',
-                'max_request_count' => 3000,
-                'max_object_count' => 15000,
-                'default' => true,
-                'end_point_id' => $this->endPointId,
-            ],
-            2 => (object) [
-                'id' => 2,
-                'name' => 'pro',
-                'max_request_count' => 15000,
-                'max_object_count' => 10000,
-                'default' => false,
-                'end_point_id' => $this->endPointId,
-            ],
-        ];
+        $response = $this->client->get('billing_plans')->send();
+
+        return json_decode($response->getBody());
     }
 
     /**
@@ -214,7 +201,9 @@ class TyrService extends AbstractTyrService
      */
     public function getBillingPlan($id)
     {
-        return $this->getBillingPlans()[$id];
+        $response = $this->client->get('billing_plans/'.$id)->send();
+
+        return json_decode($response->getBody());
     }
 
     /**
@@ -222,7 +211,16 @@ class TyrService extends AbstractTyrService
      */
     public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
     {
-        return true;
+        $params = [
+            'name' => $name,
+            'max_request_count' => $maxRequestCount,
+            'max_object_count' => $maxObjectCount,
+            'default' => $default ? 1 : ''
+        ];
+
+        $response = $this->client->put('billing_plans/'.$id, [], $params)->send();
+
+        return json_decode($response->getBody());
     }
 
     /**
@@ -230,6 +228,8 @@ class TyrService extends AbstractTyrService
      */
     public function deleteBillingPlan($id)
     {
-        return true;
+        $response = $this->client->delete(sprintf('billing_plans/%s', $id))->send();
+
+        return json_decode($response->getBody());
     }
 }
