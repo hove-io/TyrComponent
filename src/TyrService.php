@@ -109,6 +109,22 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
+    public function updateUser($userId, array $parameters)
+    {
+        $this->checkEndPointId();
+
+        $parameters['end_point_id'] = $this->endPointId;
+
+        $this->client->put('users/'.$userId, array(
+            'query' => $parameters,
+        ));
+
+        return true;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function deleteUser($email)
     {
         $user = $this->getUserByEmail($email);
@@ -224,7 +240,8 @@ class TyrService extends AbstractTyrService
     public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
     {
         $response = $this->client->put(sprintf(
-            'billing_plans?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            'billing_plans/%d?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            $id,
             $name,
             $maxRequestCount,
             $maxObjectCount,
