@@ -236,7 +236,8 @@ class TyrService extends AbstractTyrService
     public function updateBillingPlan($id, $name, $maxRequestCount, $maxObjectCount, $default)
     {
         $response = $this->client->put(sprintf(
-            'billing_plans?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            'billing_plans/%d?name=%s&max_request_count=%s&max_object_count=%s&default=%s',
+            $id,
             $name,
             $maxRequestCount,
             $maxObjectCount,

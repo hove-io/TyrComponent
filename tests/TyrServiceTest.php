@@ -18,7 +18,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
     {
         $tyrServiceClass = VersionChecker::getTyrServiceClassName();
 
-        $this->tyrService = new $tyrServiceClass('http://tyr.dev.canaltp.fr/v0/', 2);
+        $this->tyrService = new $tyrServiceClass('http://10.50.83.52:5001/v0/', 2);
     }
 
     public function testCreateUserReturnsValidStatusCode()
@@ -42,6 +42,39 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
         $resultNotNull = $this->tyrService->getUserByEmail($user->email);
         $this->assertNotNull($resultNotNull);
+
+        $this->tyrService->deleteUser($user->email);
+    }
+
+    public function testUpdateUserWithNewBillingPlan()
+    {
+        $user = $this->createRandomUser();
+        $plan = $this->createRandomPlan();
+        $createdUser = $this->tyrService->createUser($user->email, $user->login);
+        $createdPlan = $this->tyrService->createBillingPlan(
+            $plan->name,
+            $plan->max_request_count,
+            $plan->max_object_count,
+            $plan->default
+        );
+
+        $this->tyrService->updateUser($createdUser->id, ['billing_plan_id' => $createdPlan->id]);
+
+        $updatedUser = $this->tyrService->getUserById($createdUser->id);
+
+        $this->assertEquals($createdPlan->id, $updatedUser->billing_plan->id);
+
+        $this->tyrService->deleteUser($user->email);
+        $this->tyrService->deleteBillingPlan($createdPlan->id);
+    }
+
+    public function testCreatedUserHasDefaultBillingPlan()
+    {
+        $user = $this->createRandomUser();
+        $createdUser = $this->tyrService->createUser($user->email, $user->login);
+
+        $this->assertObjectHasAttribute('billing_plan', $createdUser);
+        $this->assertTrue(true, $createdUser->billing_plan->default, 'Created user billing plan marked as default');
 
         $this->tyrService->deleteUser($user->email);
     }
@@ -136,8 +169,6 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateBillingPlan()
     {
-        $this->markTestIncomplete('billing plans not implemented yet.');
-
         $plan = $this->createRandomPlan();
         $createdPlan = $this->tyrService->createBillingPlan(
             $plan->name,
@@ -146,7 +177,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
             $plan->default
         );
 
-        $this->assertEquals(201, $this->tyrService->getLastResponse()->getStatusCode());
+        $this->assertEquals(200, $this->tyrService->getLastResponse()->getStatusCode());
 
         $this->assertObjectHasAttribute('id', $createdPlan);
 
@@ -160,8 +191,6 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBillingPlans()
     {
-        $this->markTestIncomplete('billing plans not implemented yet.');
-
         $plans = $this->tyrService->getBillingPlans();
 
         $this->assertEquals(200, $this->tyrService->getLastResponse()->getStatusCode());
@@ -171,8 +200,6 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetBillingPlan()
     {
-        $this->markTestIncomplete('billing plans not implemented yet.');
-
         $plan = $this->createRandomPlan();
         $createdPlan = $this->tyrService->createBillingPlan(
             $plan->name,
@@ -193,8 +220,6 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testUpdateBillingPlan()
     {
-        $this->markTestIncomplete('billing plans not implemented yet.');
-
         $plan = $this->createRandomPlan();
         $createdPlan = $this->tyrService->createBillingPlan(
             $plan->name,
@@ -203,24 +228,20 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
             $plan->default
         );
 
-        $updated = $this->tyrService->updateBillingPlan($createdPlan->id, 'updated', 20, 30, false);
+        $updatedPlan = $this->tyrService->updateBillingPlan($createdPlan->id, 'updated', 20, 30, false);
 
-        $retrievedPlan = $this->tyrService->getBillingPlan($createdPlan->id);
+        $this->tyrService->getBillingPlan($createdPlan->id);
 
-        $this->assertTrue($updated, 'Update billing plan returns true.');
-
-        $this->assertEquals($retrievedPlan->name, 'updated');
-        $this->assertEquals($retrievedPlan->max_request_count, 20);
-        $this->assertEquals($retrievedPlan->max_object_count, 30);
-        $this->assertEquals($retrievedPlan->default, false);
+        $this->assertEquals($updatedPlan->name, 'updated');
+        $this->assertEquals($updatedPlan->max_request_count, 20);
+        $this->assertEquals($updatedPlan->max_object_count, 30);
+        $this->assertEquals($updatedPlan->default, false);
 
         $this->tyrService->deleteBillingPlan($createdPlan->id);
     }
 
     public function testDeleteBillingPlan()
     {
-        $this->markTestIncomplete('billing plans not implemented yet.');
-
         $plan = $this->createRandomPlan();
         $createdPlan = $this->tyrService->createBillingPlan(
             $plan->name,
@@ -231,15 +252,15 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->tyrService->getBillingPlan($createdPlan->id);
 
-        $this->assertEquals(200, $this->tyrService->getLastResponse()->isSuccessful());
+        $this->assertEquals(200, $this->tyrService->getLastResponse()->getStatusCode());
 
         $this->tyrService->deleteBillingPlan($createdPlan->id);
 
-        $this->assertEquals(200, $this->tyrService->getLastResponse()->isSuccessful());
+        $this->assertEquals(204, $this->tyrService->getLastResponse()->getStatusCode());
 
         $this->tyrService->deleteBillingPlan($createdPlan->id);
 
-        $this->assertEquals(404, $this->tyrService->getLastResponse()->isSuccessful());
+        $this->assertEquals(404, $this->tyrService->getLastResponse()->getStatusCode());
     }
 
     /**
