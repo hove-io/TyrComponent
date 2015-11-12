@@ -191,9 +191,13 @@ class TyrService extends AbstractTyrService
      */
     public function getBillingPlans()
     {
+        $this->checkEndPointId();
+
         $response = $this->client->get('billing_plans')->send();
 
-        return json_decode($response->getBody());
+        return array_filter(json_decode($response->getBody()), function ($billingPlan) {
+            return $this->endPointId === $billingPlan->end_point->id;
+        });
     }
 
     /**
