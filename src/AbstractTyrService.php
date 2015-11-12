@@ -137,11 +137,12 @@ abstract class AbstractTyrService
     abstract public function getUserById($id);
 
     /**
+     * @param int $userId
      * @param array $parameters
      *
      * @return bool
      */
-    abstract public function updateUser(array $parameters);
+    abstract public function updateUser($userId, array $parameters);
 
     /**
      * @param string $email

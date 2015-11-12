@@ -102,9 +102,17 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
-    public function updateUser(array $parameters)
+    public function updateUser($userId, array $parameters)
     {
-        return false;
+        $this->checkEndPointId();
+
+        $parameters['end_point_id'] = $this->endPointId;
+
+        $this->client->put('users/'.$userId, [], array(
+            'query' => $parameters,
+        ))->send();
+
+        return true;
     }
 
     /**
