@@ -109,6 +109,14 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
+    public function updateUser(array $parameters)
+    {
+        return false;
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function deleteUser($email)
     {
         $user = $this->getUserByEmail($email);
