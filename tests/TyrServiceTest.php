@@ -18,7 +18,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
     {
         $tyrServiceClass = VersionChecker::getTyrServiceClassName();
 
-        $this->tyrService = new $tyrServiceClass('http://10.50.83.52:5001/v0/', 2);
+        $this->tyrService = new $tyrServiceClass('http://tyr.dev.canaltp.fr/v0/', 2);
     }
 
     public function testCreateUserReturnsValidStatusCode()
