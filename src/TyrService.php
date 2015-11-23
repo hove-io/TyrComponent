@@ -267,17 +267,4 @@ class TyrService extends AbstractTyrService
 
         return json_decode($response->getBody());
     }
-
-    private function getBillingPlanFilterByName($value)
-    {
-        $billingPlans = $this->getBillingPlans();
-
-        foreach ($billingPlans as $billingPlan) {
-            if ($billingPlan->name === $value) {
-                return $billingPlan;
-            }
-        }
-
-        return null;
-    }
 }

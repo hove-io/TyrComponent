@@ -230,5 +230,16 @@ abstract class AbstractTyrService
      *
      * @return null if plan not found else \stdClass
      */
-    abstract public function getBillingPlanFilterByName($value);
+    protected function getBillingPlanFilterByName($value)
+    {
+        $billingPlans = $this->getBillingPlans();
+
+        foreach ($billingPlans as $billingPlan) {
+            if ($billingPlan->name === $value) {
+                return $billingPlan;
+            }
+        }
+
+        return null;
+    }
 }
