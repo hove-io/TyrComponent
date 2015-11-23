@@ -64,6 +64,13 @@ class TyrService extends AbstractTyrService
             'login' => $login,
         ));
 
+        if (array_key_exists('billing_plan_default', $params) && $params['billing_plan_default'] != "") {
+            $billingPlan = $this->getBillingPlanFilterByName($params['billing_plan_default']);
+            if ($billingPlan != null) {
+                $params['billing_plan_id'] = $billingPlan->id;
+            }
+        }
+
         if (null !== $this->endPointId) {
             $params['end_point_id'] = $this->endPointId;
         }

@@ -222,4 +222,24 @@ abstract class AbstractTyrService
      * @return bool success
      */
     abstract public function deleteBillingPlan($id);
+
+    /**
+     * Get a plan filter by name.
+     *
+     * @param string $value
+     *
+     * @return null if plan not found else \stdClass
+     */
+    protected function getBillingPlanFilterByName($value)
+    {
+        $billingPlans = $this->getBillingPlans();
+
+        foreach ($billingPlans as $billingPlan) {
+            if ($billingPlan->name === $value) {
+                return $billingPlan;
+            }
+        }
+
+        return null;
+    }
 }
