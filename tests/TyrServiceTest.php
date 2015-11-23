@@ -18,7 +18,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
     {
         $tyrServiceClass = VersionChecker::getTyrServiceClassName();
 
-        $this->tyrService = new $tyrServiceClass('http://tyr.dev.canaltp.fr/v0/', 2);
+        $this->tyrService = new $tyrServiceClass('http://tyr.dev.canaltp.fr/v0/', 1);
     }
 
     public function testCreateUserReturnsValidStatusCode()
@@ -42,6 +42,20 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
         $resultNotNull = $this->tyrService->getUserByEmail($user->email);
         $this->assertNotNull($resultNotNull);
+
+        $this->tyrService->deleteUser($user->email);
+    }
+
+    public function testCreateUserWithBillingPlanByDefault()
+    {
+        $user = $this->createRandomUser();
+        $billingPlanName = 'nav_dev';
+
+        $resultNull = $this->tyrService->getUserByEmail($user->email);
+        $this->assertNull($resultNull);
+
+        $user = $this->tyrService->createUser($user->email, $user->login, ['billing_plan_default' => $billingPlanName]);
+        $this->assertEquals($billingPlanName, $user->billing_plan->name);
 
         $this->tyrService->deleteUser($user->email);
     }
