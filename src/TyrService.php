@@ -118,7 +118,7 @@ class TyrService extends AbstractTyrService
      */
     public function getUsers()
     {
-        $response = $this->client->get('users')->send();
+        $response = $this->client->get('users');
 
         return  json_decode($response->getBody());
     }
