@@ -125,9 +125,7 @@ class TyrService extends AbstractTyrService
 
         $parameters['end_point_id'] = $this->endPointId;
 
-        $this->client->put('users/'.$userId, [], array(
-            'query' => $parameters,
-        ))->send();
+        $this->client->put('users/'.$userId, [], $parameters)->send();
 
         return true;
     }
