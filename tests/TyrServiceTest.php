@@ -212,6 +212,14 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $plans);
     }
 
+    public function testGetUsers()
+    {
+        $users = $this->tyrService->getUsers();
+
+        $this->assertEquals(200, $this->tyrService->getLastResponse()->getStatusCode());
+        $this->assertInternalType('array', $users);
+    }
+
     public function testGetBillingPlan()
     {
         $plan = $this->createRandomPlan();

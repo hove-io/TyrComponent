@@ -109,15 +109,23 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
+    public function getUsers()
+    {
+        $response = $this->client->get('users')->send();
+
+        return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function updateUser($userId, array $parameters)
     {
         $this->checkEndPointId();
 
         $parameters['end_point_id'] = $this->endPointId;
 
-        $this->client->put('users/'.$userId, [], array(
-            'query' => $parameters,
-        ))->send();
+        $this->client->put('users/'.$userId, [], $parameters)->send();
 
         return true;
     }
