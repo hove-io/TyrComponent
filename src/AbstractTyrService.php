@@ -130,7 +130,7 @@ abstract class AbstractTyrService
     abstract public function getUserByEmail($email);
 
     /**
-     * @return \stdClass|null
+     * @return array|null
      */
     abstract public function getUsers();
 
