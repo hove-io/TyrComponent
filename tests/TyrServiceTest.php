@@ -222,7 +222,7 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUsersByEndPointId()
     {
-        $users = $this->tyrService->getUsersByEndPointId();
+        $users = $this->tyrService->getUsersByEndPointId(1);
 
         $this->assertEquals(200, $this->tyrService->getLastResponse()->getStatusCode());
         $this->assertInternalType('array', $users);
