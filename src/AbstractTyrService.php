@@ -125,9 +125,16 @@ abstract class AbstractTyrService
     /**
      * @param string $email
      *
-     * @return array|null
+     * @return \stdClass|null
      */
     abstract public function getUserByEmail($email);
+
+    /**
+     * @param integer $endPointId
+     *
+     * @return array|null
+     */
+    abstract public function getUsersByEndPointId($endPointId);
 
     /**
      * @return array|null
