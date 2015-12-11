@@ -97,10 +97,10 @@ class TyrService extends AbstractTyrService
             ),
         ))->send();
 
-        $users = json_decode($response->getBody());
+        $user = json_decode($response->getBody());
 
-        if (is_array($users) && count($users) > 0) {
-            return $users[0];
+        if (is_array($user) && count($user) > 0) {
+            return $user[0];
         } else {
             return null;
         }
@@ -109,11 +109,28 @@ class TyrService extends AbstractTyrService
     /**
      * {@InheritDoc}
      */
+    public function getUsersByEndPointId($endPointId)
+    {
+        $this->setEndPointId($endPointId);
+
+        $response = $this->client->get('users', [], [
+            'query' => ['end_point_id' => $this->endPointId]
+        ])->send();
+
+        $users = json_decode($response->getBody());
+
+        return (is_array($users) && count($users) > 0) ? $users : [];
+    }
+
+    /**
+     * {@InheritDoc}
+     */
     public function getUsers()
     {
         $response = $this->client->get('users')->send();
+        $users = json_decode($response->getBody());
 
-        return json_decode($response->getBody());
+        return (is_array($users) && count($users) > 0) ? $users : [];
     }
 
     /**
