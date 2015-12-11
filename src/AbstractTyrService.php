@@ -132,12 +132,12 @@ abstract class AbstractTyrService
     /**
      * @param integer $endPointId
      *
-     * @return array|null
+     * @return array
      */
     abstract public function getUsersByEndPointId($endPointId);
 
     /**
-     * @return array|null
+     * @return array
      */
     abstract public function getUsers();
 

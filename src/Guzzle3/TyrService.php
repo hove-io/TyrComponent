@@ -119,7 +119,7 @@ class TyrService extends AbstractTyrService
 
         $users = json_decode($response->getBody());
 
-        return (is_array($users) && count($users) > 0) ? $users : null;
+        return (is_array($users) && count($users) > 0) ? $users : [];
     }
 
     /**
@@ -130,7 +130,7 @@ class TyrService extends AbstractTyrService
         $response = $this->client->get('users')->send();
         $users = json_decode($response->getBody());
 
-        return (is_array($users) && count($users) > 0) ? $users : null;
+        return (is_array($users) && count($users) > 0) ? $users : [];
     }
 
     /**
