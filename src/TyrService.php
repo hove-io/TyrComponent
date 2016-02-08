@@ -145,10 +145,6 @@ class TyrService extends AbstractTyrService
      */
     public function updateUser($userId, array $parameters)
     {
-        $this->checkEndPointId();
-
-        $parameters['end_point_id'] = $this->endPointId;
-
         $this->client->put('users/'.$userId, array(
             'query' => $parameters,
         ));
