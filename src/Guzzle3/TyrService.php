@@ -61,7 +61,7 @@ class TyrService extends AbstractTyrService
 
         if (array_key_exists('billing_plan_default', $params) && $params['billing_plan_default'] != "") {
             $billingPlan = $this->getBillingPlanFilterByName($params['billing_plan_default']);
-            if ($billingPlan != null) {
+            if ($billingPlan !== null) {
                 $params['billing_plan_id'] = $billingPlan->id;
             }
         }
@@ -239,7 +239,7 @@ class TyrService extends AbstractTyrService
 
         $response = $this->client->get('billing_plans')->send();
 
-        return array_filter(json_decode($response->getBody()), function ($billingPlan) {
+        return array_filter(json_decode($response->getBody()), function (\stdClass $billingPlan) {
             return $this->endPointId === $billingPlan->end_point->id;
         });
     }
