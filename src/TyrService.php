@@ -199,7 +199,11 @@ class TyrService extends AbstractTyrService
      */
     public function getUserKeys($userId)
     {
-        $response = $this->client->get('users/'.$userId.'/keys');
+        try {
+            $response = $this->client->get('users/'.$userId.'/keys');
+        } catch (\Guzzle\Http\Exception\CurlException $ex) {
+            return null;
+        }
 
         return json_decode($response->getBody());
     }
