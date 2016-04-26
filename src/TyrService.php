@@ -2,6 +2,7 @@
 
 namespace CanalTP\TyrComponent;
 
+use Guzzle\Http\Message\Response;
 use GuzzleHttp\Client;
 use GuzzleHttp\Event\CompleteEvent;
 use CanalTP\TyrComponent\VersionChecker;
@@ -195,6 +196,27 @@ class TyrService extends AbstractTyrService
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function addUserInstance($userId, $api, $instance)
+    {
+        if (null !== $userId) {
+            $url = sprintf('users/%s/authorizations', $userId);
+            /* @var Response $response */
+            $response = $this->client->post($url, array(
+                'json' => array(
+                    'api_id' => $api,
+                    'instance_id' => $instance,
+                ),
+            ));
+
+            return $response->getStatusCode() === 200;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * {@InheritDoc}
      */
     public function getUserKeys($userId)
@@ -293,5 +315,16 @@ class TyrService extends AbstractTyrService
         $response = $this->client->delete(sprintf('billing_plans/%s', $id));
 
         return json_decode($response->getBody());
+    }
+
+    /**
+     * {@InheritDoc}
+     */
+    public function getInstances()
+    {
+        $response = $this->client->get('instances');
+        $instances = json_decode($response->getBody());
+
+        return (is_array($instances) && count($instances) > 0) ? $instances : [];
     }
 }
