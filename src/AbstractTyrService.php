@@ -34,10 +34,8 @@ abstract class AbstractTyrService
     {
         $this->checkGuzzleVersion();
 
-        $this->wsUrl = $wsUrl;
         $this->endPointId = $endPointId;
-
-        $this->setClient($this->createDefaultClient());
+        $this->setUrl($wsUrl);
     }
 
     /**
@@ -85,6 +83,21 @@ abstract class AbstractTyrService
         $this->client = $client;
 
         $this->listenResponses($client);
+
+        return $this;
+    }
+
+    /**
+     * @param string $wsUrl
+     *
+     * @return AbstractTyrService
+     */
+    public function setUrl($wsUrl)
+    {
+        $this->wsUrl = $wsUrl;
+        $this->setClient(
+            $this->createDefaultClient()
+        );
 
         return $this;
     }
@@ -173,6 +186,14 @@ abstract class AbstractTyrService
 
     /**
      * @param int $userId
+     * @param string $instance
+     *
+     * @return bool
+     */
+    abstract public function addUserInstance($userId, $api, $instance);
+
+    /**
+     * @param int $userId
      *
      * @return array|\stdClass array of keys
      *                         or \stdClass with attribute 'status' if $userId not found
@@ -254,4 +275,9 @@ abstract class AbstractTyrService
 
         return null;
     }
+
+    /**
+     * @return array
+     */
+    abstract public function getInstances();
 }
