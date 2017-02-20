@@ -2,6 +2,7 @@
 
 namespace CanalTP\TyrComponent\Tests;
 
+use CanalTP\TyrComponent\Exception\InvalidApplicationNameException;
 use CanalTP\TyrComponent\VersionChecker;
 
 class TyrServiceTest extends \PHPUnit_Framework_TestCase
@@ -291,6 +292,15 @@ class TyrServiceTest extends \PHPUnit_Framework_TestCase
         $this->tyrService->deleteBillingPlan($createdPlan->id);
 
         $this->assertEquals(404, $this->tyrService->getLastResponse()->getStatusCode());
+    }
+
+    /**
+     * @expectedException CanalTP\TyrComponent\Exception\InvalidApplicationNameException
+     * @expectedExceptionMessage Application name is not valid
+     */
+    public function testCreateTokenWithInvalidCharShouldFail()
+    {
+        $this->tyrService->createUserKey(1337, 'invalid app namé');
     }
 
     /**
