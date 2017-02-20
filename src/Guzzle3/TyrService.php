@@ -2,6 +2,7 @@
 
 namespace CanalTP\TyrComponent\Guzzle3;
 
+use CanalTP\TyrComponent\Exception\InvalidApplicationNameException;
 use Guzzle\Common\Event;
 use Guzzle\Http\Message\Response;
 use Guzzle\Service\Client;
@@ -172,6 +173,16 @@ class TyrService extends AbstractTyrService
         ))->send();
 
         $result = json_decode($response->getBody());
+
+        // only one error can have a 400 status code: invalid application name
+        if (400 === $response->getStatusCode()) {
+            if (!empty($result->message->app_name)) {
+                throw new InvalidApplicationNameException();
+            }
+
+            throw new \LogicException('An error occured while trying to create a token');
+        }
+
         $key = null;
 
         if (is_object($result) && property_exists($result, 'keys') && is_array($result->keys)) {
