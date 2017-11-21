@@ -57,7 +57,7 @@ class TyrService extends AbstractTyrService
         $this->checkEndPointId();
 
         $params = array_merge($parameters, array(
-            'email' => $email,
+            'email' => urlencode($email),
             'login' => $login,
         ));
 
